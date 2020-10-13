@@ -1,4 +1,15 @@
 {
+{% if BREAKOUT_CFG %}
+    "BREAKOUT_CFG": {
+{%- for intf in BREAKOUT_CFG -%}
+        "{{intf}}": {
+{% if BREAKOUT_CFG[intf].brkout_mode is defined and BREAKOUT_CFG[intf].brkout_mode != "" %}
+            "brkout_mode": "{{ BREAKOUT_CFG[intf].brkout_mode }}"
+{% endif %}
+        }{%- if loop.last == False -%},{% endif %}
+{%- endfor %}
+    },
+{% endif %}
     "DEVICE_METADATA": { 
       "localhost" : {
        "hwsku" : "{{ DEVICE_METADATA.localhost.hwsku }}",
@@ -22,6 +33,9 @@
 {% endif %}
 {% if PORT[port].valid_speeds is defined and PORT[port].valid_speeds != "" %}
                 "valid_speeds": "{{ PORT[port].valid_speeds }}",
+{% endif %}
+{% if PORT[port].autoneg is defined and PORT[port].autoneg != "" %}
+                "autoneg": "{{ PORT[port].autoneg }}",
 {% endif %}
 {% if PORT[port].fec is defined and PORT[port].fec != "" %}
                 "fec": "{{ PORT[port].fec }}",
